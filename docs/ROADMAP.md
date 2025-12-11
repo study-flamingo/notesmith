@@ -59,6 +59,38 @@
 - [ ] Authentication flow
 - [ ] Chrome Web Store submission
 
+## 🖥️ CLI Tool
+
+Standalone command-line interface for using backend services in scripts, pipelines, or external integrations.
+
+### Scaffold ✅
+- [x] Typer-based CLI structure (`backend/app/cli/`)
+- [x] Entry point: `notesmith` (via `pip install -e backend/`)
+- [x] Command stubs with help text and argument parsing
+
+### Core Commands
+- [ ] `notesmith transcribe <audio-file>` — Transcribe audio via Whisper
+- [ ] `notesmith generate <transcript-file> --template <name>` — Generate clinical note
+- [ ] `notesmith export <note-file> --format pdf|docx` — Export note to file
+- [ ] `notesmith process <audio-file>` — Full pipeline: transcribe → generate → export
+
+### Template Management
+- [ ] `notesmith templates list` — List available templates
+- [ ] `notesmith templates show <name>` — Display template content
+- [ ] `notesmith templates import <file>` — Import template from JSON
+- [ ] `notesmith templates export <name>` — Export template to JSON
+
+### Configuration
+- [ ] `notesmith config init` — Interactive setup (API keys, LLM provider)
+- [ ] `notesmith config set <key> <value>` — Set configuration option
+- [ ] Environment variable support for CI/CD pipelines
+
+### Developer Features
+- [ ] JSON output mode (`--json`) for machine-readable output
+- [ ] Quiet/verbose modes (`-q`, `-v`)
+- [ ] Stdin/stdout piping for composability
+- [ ] Python API (`from notesmith import transcribe, generate_note`)
+
 ## 🚀 Pre-Launch Checklist
 
 - [ ] Enable email confirmation in Supabase

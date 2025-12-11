@@ -93,6 +93,8 @@ notesmith/
 ├── backend/
 │   ├── app/
 │   │   ├── api/            # REST endpoints
+│   │   ├── cli/            # CLI commands (typer)
+│   │   │   └── commands/   # Individual command modules
 │   │   ├── core/           # Config, security, logging
 │   │   ├── db/             # Supabase client
 │   │   ├── models/         # Pydantic schemas
@@ -210,6 +212,13 @@ Color palette: ARC-esque
 - [ ] Authentication flow (web app → extension)
 - [ ] Chrome Web Store submission
 
+**CLI Tool:**
+- [x] CLI scaffold with typer (commands stubbed)
+- [ ] Core commands (transcribe, generate, export, process)
+- [ ] Template management commands
+- [ ] Configuration system
+- [ ] Python API for programmatic use
+
 ## ⚠️ Pre-Production Checklist
 
 Before deploying to production, ensure:
@@ -241,3 +250,19 @@ Initial scaffold complete. See `docs/EXTENSION.md` for full design document.
 1. Implement real API endpoints (`/notes/pending`, `/notes/{id}/mark-inserted`)
 2. Add `/auth/extension` callback page in frontend
 3. Test with actual PMS pages
+
+### CLI Tool (Scaffolded - Dec 2024)
+
+Scaffold complete at `backend/app/cli/`. Installable via `pip install -e backend/` → `notesmith` command.
+
+**Structure:**
+- `cli/__init__.py` - Main typer app
+- `cli/commands/` - Individual commands (transcribe, generate, export, process, templates, config)
+
+**Key command:** `notesmith process <audio> --template soap --format pdf` runs full pipeline.
+
+**Next steps:**
+1. Wire up `transcribe` to `TranscriptionService`
+2. Wire up `generate` to `NoteGeneratorService`
+3. Wire up `export` to `ExportService`
+4. Implement config file loading (`~/.notesmith/config.toml`)
