@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   LayoutTemplate,
   Plus,
@@ -18,6 +19,7 @@ import { templatesApi, Template } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
 
 export default function TemplatesPage() {
+  const router = useRouter();
   const [templates, setTemplates] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,33 +29,58 @@ export default function TemplatesPage() {
 
   const supabase = createClient();
 
-  useEffect(() => {
-    fetchTemplates();
-  }, []);
-
-  async function fetchTemplates() {
+  const fetchTemplates = useCallback(async (accessToken: string) => {
     try {
       setLoading(true);
       setError(null);
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.access_token) {
-        setError("Please sign in to view templates");
-        return;
-      }
-
-      const data = await templatesApi.list(session.access_token);
+      const data = await templatesApi.list(accessToken);
       setTemplates(data);
     } catch (err) {
       console.error("Failed to fetch templates:", err);
-      setError(err instanceof Error ? err.message : "Failed to load templates");
+      const message = err instanceof Error ? err.message : "Failed to load templates";
+      
+      // If token is invalid/expired, redirect to login
+      if (message.toLowerCase().includes("token") || message.toLowerCase().includes("unauthorized")) {
+        await supabase.auth.signOut();
+        router.push("/login");
+        return;
+      }
+      
+      setError(message);
     } finally {
       setLoading(false);
     }
-  }
+  }, [supabase.auth, router]);
+
+  useEffect(() => {
+    // Listen for auth state changes to handle session properly
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.access_token) {
+          await fetchTemplates(session.access_token);
+        } else if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+          // Only redirect if explicitly signed out, not on initial load
+          if (event === 'SIGNED_OUT') {
+            router.push("/login");
+          }
+        }
+      }
+    );
+
+    // Initial session check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.access_token) {
+        fetchTemplates(session.access_token);
+      } else {
+        setLoading(false);
+        setError("Please sign in to view templates");
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase.auth, fetchTemplates, router]);
 
   async function handleDuplicate(template: Template) {
     try {

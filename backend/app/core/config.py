@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     # Backend uses service role key (secret) for full database access
     supabase_url: str = ""
     supabase_service_role_key: str = ""
+    # Note: JWT verification uses JWKS (public keys) fetched from:
+    # https://<project>.supabase.co/auth/v1/.well-known/jwks.json
+    # No shared secret needed - Supabase uses ES256 asymmetric signing
 
     # OpenAI settings
     openai_api_key: str = ""

@@ -1,0 +1,7 @@
+---
+description: Anything with Supabase
+alwaysApply: false
+---
+
+## ALWAYS use the latest docs
+Whenever writing code around the supabase integration, ALWAYS be sure to use the most current documentation. It is available through the Context7 MCP server, or in the docs folder.

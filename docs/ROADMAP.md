@@ -2,7 +2,7 @@
 
 ## ✅ Phase 1: Foundation (Complete)
 
-- [x] Project scaffolding (Next.js 15 + FastAPI)
+- [x] Project scaffolding (Next.js 16 + FastAPI)
 - [x] Database schema and migrations
 - [x] Supabase Auth with user creation trigger
 - [x] Row-Level Security policies
@@ -25,16 +25,17 @@
 | Module | Status | Notes |
 |--------|--------|-------|
 | Dashboard | 🟡 Partial | UI works, needs real data |
-| Templates | 🔁 Revising | List, view, edit, create, import/export |
+| Templates | ✅ Complete | List, view, edit, create, import/export |
 | Appointments | 🔴 TODO | List, create, edit, delete |
 | Recordings | 🔴 TODO | Upload, playback, status |
 | Notes | 🔴 TODO | View, edit, export |
 | Settings | 🔴 TODO | User profile, practice settings |
 
 ### API Integration
-- [ ] Connect frontend to FastAPI backend
-- [ ] Implement authentication flow (JWT from Supabase → backend)
-- [ ] Wire up all CRUD operations
+- [x] Connect frontend to FastAPI backend
+- [x] Implement authentication flow (JWT from Supabase → backend via JWKS)
+- [x] Wire up Templates CRUD operations
+- [ ] Wire up remaining CRUD operations (Appointments, Recordings, Notes)
 
 ## 📋 Phase 3: Polish & Compliance
 
@@ -100,4 +101,4 @@ Standalone command-line interface for using backend services in scripts, pipelin
 
 ---
 
-*Last updated: December 2024*
+*Last updated: December 11, 2024*

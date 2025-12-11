@@ -45,7 +45,7 @@ export default function TemplateViewPage({ params }: PageProps) {
       } = await supabase.auth.getSession();
 
       if (!session?.access_token) {
-        setError("Please sign in to view this template");
+        router.push("/login");
         return;
       }
 
@@ -53,7 +53,15 @@ export default function TemplateViewPage({ params }: PageProps) {
       setTemplate(data);
     } catch (err) {
       console.error("Failed to fetch template:", err);
-      setError(err instanceof Error ? err.message : "Failed to load template");
+      const message = err instanceof Error ? err.message : "Failed to load template";
+      
+      if (message.toLowerCase().includes("token") || message.toLowerCase().includes("unauthorized")) {
+        await supabase.auth.signOut();
+        router.push("/login");
+        return;
+      }
+      
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -237,4 +245,6 @@ export default function TemplateViewPage({ params }: PageProps) {
     </div>
   );
 }
+
+
 

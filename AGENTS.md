@@ -36,7 +36,7 @@ NoteSmith is a HIPAA-compliant web application that processes passively-recorded
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
-| Frontend | Next.js 15, React 19, TypeScript, Tailwind CSS | UI, SSR, routing |
+| Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS | UI, SSR, routing |
 | Backend | Python 3.11+, FastAPI | REST API, business logic |
 | Database | Supabase (PostgreSQL) | Data persistence, RLS |
 | Auth | Supabase Auth | User management, sessions |
@@ -154,6 +154,10 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 # Start all services
 docker-compose up
 
+# Restart with cache flush (fixes 404s, stale pages)
+./restart.sh -f     # Mac/Linux/Git Bash
+.\restart.ps1 -Flush # Windows PowerShell
+
 # Individual services
 cd backend && uvicorn app.main:app --reload
 cd frontend && npm run dev
@@ -237,32 +241,41 @@ Before deploying to production, ensure:
 
 ## Scratchpad
 
-### Chrome Extension (In Progress - Dec 2024)
+### Restart Scripts - Cache Flushing (Dec 2024)
 
-Initial scaffold complete. See `docs/EXTENSION.md` for full design document.
+Added `-f/--flush` flag to `restart.sh` and `restart.ps1`:
+- Clears `.next` cache volume (fixes 404 errors on pages)
+- Removes `__pycache__` files (fixes stale Python code)
+- Less aggressive than `--clean` (preserves database volumes)
 
-**Key decisions:**
-- WXT framework (Vite-based, supports Chrome + Firefox)
-- Manual field targeting (user focuses field, clicks "Insert")
-- Session-only storage for HIPAA compliance
+Usage: `./restart.sh -f` or `.\restart.ps1 -Flush`
 
-**Next steps:**
-1. Implement real API endpoints (`/notes/pending`, `/notes/{id}/mark-inserted`)
-2. Add `/auth/extension` callback page in frontend
-3. Test with actual PMS pages
+### Supabase Auth - JWKS Verification (Dec 2024)
 
-### CLI Tool (Scaffolded - Dec 2024)
+Backend now uses **JWKS-based JWT verification** instead of shared secrets:
+- Supabase uses ES256 (P-256 elliptic curve) signing keys
+- Public keys fetched from `/.well-known/jwks.json` endpoint
+- 10-minute cache for performance
+- No `SUPABASE_JWT_SECRET` env var needed anymore
 
-Scaffold complete at `backend/app/cli/`. Installable via `pip install -e backend/` → `notesmith` command.
+See `backend/app/core/security.py` for implementation.
 
-**Structure:**
-- `cli/__init__.py` - Main typer app
-- `cli/commands/` - Individual commands (transcribe, generate, export, process, templates, config)
+### Common Issues & Solutions
 
-**Key command:** `notesmith process <audio> --template soap --format pdf` runs full pipeline.
+| Issue | Solution |
+|-------|----------|
+| 404 on pages that exist | `./restart.sh -f` to flush caches |
+| "Invalid or expired token" | Check backend logs, verify JWKS endpoint reachable |
+| CORS errors | Ensure no rogue process on port 8000, check `cors_origins` in config |
+| Stale Python code | `./restart.sh -f` or manually delete `__pycache__` |
 
-**Next steps:**
-1. Wire up `transcribe` to `TranscriptionService`
-2. Wire up `generate` to `NoteGeneratorService`
-3. Wire up `export` to `ExportService`
-4. Implement config file loading (`~/.notesmith/config.toml`)
+### Next Up
+
+**Chrome Extension:**
+- Implement `/notes/pending` and `/notes/{id}/mark-inserted` endpoints
+- Add `/auth/extension` callback page
+- See `docs/EXTENSION.md` for design
+
+**CLI Tool:**
+- Wire commands to services (transcribe, generate, export)
+- Implement config file (`~/.notesmith/config.toml`)

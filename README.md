@@ -108,6 +108,9 @@ Export finalized notes in multiple formats:
    SECRET_KEY=generate-a-random-string
    REDIS_URL=redis://localhost:6379/0
    ```
+   
+   > **Note**: JWT verification uses Supabase's JWKS public key endpoint automatically.
+   > No JWT secret configuration needed!
 
    Frontend (`frontend/.env.local`):
 

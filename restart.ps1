@@ -1,24 +1,28 @@
 # NoteSmith Restart Script for Windows PowerShell
 #
 # Usage: .\restart.ps1 [options]
-#   -Clean    Clean restart (remove volumes, rebuild from scratch)
+#   -Flush    Flush application caches (.next, __pycache__) - fixes most issues
+#   -Clean    Clean restart (remove ALL volumes, rebuild from scratch)
 #   -Build    Rebuild images before starting
 #   -Logs     Follow logs after starting
 #   -Help     Show help message
 #
 # Examples:
 #   .\restart.ps1              Quick restart (stop and start)
+#   .\restart.ps1 -Flush       Flush caches and restart (recommended for cache issues)
 #   .\restart.ps1 -Build       Rebuild and restart
-#   .\restart.ps1 -Clean       Clean everything and rebuild
-#   .\restart.ps1 -Build -Logs Rebuild and follow logs
+#   .\restart.ps1 -Clean       Clean everything and rebuild (nuclear option)
+#   .\restart.ps1 -Flush -Logs Flush caches and follow logs
 #
 # When to use each option:
 #   No flags   - Just need to restart, or hot reload not working
+#   -Flush     - 404 errors, stale pages, cache corruption
 #   -Build     - Changed package.json, pyproject.toml, or Dockerfile
-#   -Clean     - JSON manifest error, cache corruption, or major issues
+#   -Clean     - Database issues, major problems (removes all data!)
 #   -Logs      - Want to watch logs after restart
 
 param(
+    [switch]$Flush,
     [switch]$Clean,
     [switch]$Build,
     [switch]$Logs,
@@ -62,21 +66,24 @@ if ($Help) {
     Write-Host "Usage: .\restart.ps1 [options]"
     Write-Host ""
     Write-Host "Options:"
-    Write-Host "  -Clean    Clean restart (remove volumes, rebuild from scratch)"
+    Write-Host "  -Flush    Flush application caches (.next, __pycache__)"
+    Write-Host "  -Clean    Clean restart (remove ALL volumes, rebuild)"
     Write-Host "  -Build    Rebuild images before starting"
     Write-Host "  -Logs     Follow logs after starting"
     Write-Host "  -Help     Show this help message"
     Write-Host ""
     Write-Host "Examples:"
     Write-Host "  .\restart.ps1              Quick restart (stop and start)"
+    Write-Host "  .\restart.ps1 -Flush       Flush caches and restart"
     Write-Host "  .\restart.ps1 -Build       Rebuild and restart"
     Write-Host "  .\restart.ps1 -Clean       Clean everything and rebuild"
-    Write-Host "  .\restart.ps1 -Build -Logs Rebuild and follow logs"
+    Write-Host "  .\restart.ps1 -Flush -Logs Flush caches and follow logs"
     Write-Host ""
     Write-Host "When to use each option:" -ForegroundColor Yellow
     Write-Host "  No flags   Just need to restart, or hot reload not working"
+    Write-Host "  -Flush     404 errors, stale pages, cache corruption"
     Write-Host "  -Build     Changed package.json, pyproject.toml, or Dockerfile"
-    Write-Host "  -Clean     JSON manifest error, cache corruption, or major issues"
+    Write-Host "  -Clean     Database issues, major problems (removes all data!)"
     Write-Host "  -Logs      Want to watch logs after restart"
     exit 0
 }
@@ -113,10 +120,41 @@ function Invoke-DockerCompose {
 Write-Info "Stopping containers..."
 if ($Clean) {
     Invoke-DockerCompose @("down", "-v", "--remove-orphans")
-    Write-Success "Containers stopped and volumes removed"
+    Write-Success "Containers stopped and ALL volumes removed"
 } else {
     Invoke-DockerCompose @("down", "--remove-orphans")
     Write-Success "Containers stopped"
+}
+
+# Flush application caches (but preserve data volumes)
+if ($Flush -and -not $Clean) {
+    Write-Info "Flushing application caches..."
+    
+    # Remove .next cache volume
+    $volumes = docker volume ls -q 2>$null
+    if ($volumes -contains "notesmith_frontend_next") {
+        try {
+            docker volume rm notesmith_frontend_next 2>$null
+            Write-Success "Removed .next cache volume"
+        } catch {
+            Write-WarningMsg "Could not remove .next cache volume (may not exist)"
+        }
+    }
+    
+    # Remove Python __pycache__ from backend
+    if (Test-Path "backend\app") {
+        Get-ChildItem -Path "backend" -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue | 
+            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+        Get-ChildItem -Path "backend" -Recurse -File -Filter "*.pyc" -ErrorAction SilentlyContinue | 
+            Remove-Item -Force -ErrorAction SilentlyContinue
+        Write-Success "Removed Python cache files"
+    }
+    
+    # Remove .next from local frontend (if exists outside Docker)
+    if (Test-Path "frontend\.next") {
+        Remove-Item -Path "frontend\.next" -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Success "Removed local .next directory"
+    }
 }
 
 # Build if requested
@@ -135,8 +173,9 @@ Write-Info "Starting containers..."
 Invoke-DockerCompose @("up", "-d")
 Write-Success "Containers started"
 
-# Wait a moment for services to initialize
-Start-Sleep -Seconds 2
+# Wait for services to initialize
+Write-Info "Waiting for services to initialize..."
+Start-Sleep -Seconds 5
 
 # Check container status
 Write-Header "Container Status"
@@ -162,4 +201,3 @@ if ($Logs) {
     Write-Host "docker-compose logs -f" -ForegroundColor Yellow
     Write-Host ""
 }
-

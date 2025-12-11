@@ -169,7 +169,7 @@ export default function NewTemplatePage() {
       } = await supabase.auth.getSession();
 
       if (!session?.access_token) {
-        setError("Please sign in to create a template");
+        router.push("/login");
         return;
       }
 
@@ -194,7 +194,15 @@ export default function NewTemplatePage() {
       router.push(`/dashboard/templates/${created.id}`);
     } catch (err) {
       console.error("Failed to create template:", err);
-      setError(err instanceof Error ? err.message : "Failed to create template");
+      const message = err instanceof Error ? err.message : "Failed to create template";
+      
+      if (message.toLowerCase().includes("token") || message.toLowerCase().includes("unauthorized")) {
+        await supabase.auth.signOut();
+        router.push("/login");
+        return;
+      }
+      
+      setError(message);
     } finally {
       setSaving(false);
     }
@@ -390,4 +398,6 @@ export default function NewTemplatePage() {
     </div>
   );
 }
+
+
 
