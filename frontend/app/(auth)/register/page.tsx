@@ -50,49 +50,49 @@ export default function RegisterPage() {
       return;
     }
 
-    // Check if email confirmation is required
     if (data.user && !data.session) {
-      // Email confirmation required - show message
       setEmailSent(true);
       setLoading(false);
     } else {
-      // No confirmation required or auto-confirmed - redirect
       router.push("/dashboard");
       router.refresh();
     }
   }
 
-  // Email confirmation sent - show success message
   if (emailSent) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-dental-950 via-clinical-900 to-dental-900 flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
+      <div className="min-h-screen bg-arc-bg flex items-center justify-center p-6 relative overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-cyan/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-green/10 rounded-full blur-3xl" />
+        
+        <div className="w-full max-w-md relative z-10 animate-fade-in-up">
           {/* Logo */}
           <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-dental-500 rounded-xl flex items-center justify-center">
-              <Sparkles className="w-7 h-7 text-white" />
+            <div className="w-12 h-12 bg-accent-green rounded-xl flex items-center justify-center shadow-glow-green">
+              <Sparkles className="w-7 h-7 text-arc-bg" />
             </div>
-            <span className="text-2xl font-semibold text-white">NoteSmith</span>
+            <span className="text-2xl font-semibold text-text-primary">NoteSmith</span>
           </div>
 
           {/* Success Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-            <div className="w-16 h-16 bg-dental-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Mail className="w-8 h-8 text-dental-600" />
+          <div className="bg-arc-surface rounded-2xl border border-arc-border shadow-xl p-8 text-center">
+            <div className="w-16 h-16 bg-accent-cyan/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-accent-cyan/20 shadow-glow-cyan-sm">
+              <Mail className="w-8 h-8 text-accent-cyan" />
             </div>
-            <h1 className="text-2xl font-semibold text-clinical-900 mb-2">
+            <h1 className="text-2xl font-semibold text-text-primary mb-2">
               Check your email
             </h1>
-            <p className="text-clinical-500 mb-6">
-              We&apos;ve sent a confirmation link to <strong className="text-clinical-700">{email}</strong>. 
+            <p className="text-text-secondary mb-6">
+              We&apos;ve sent a confirmation link to <strong className="text-text-primary">{email}</strong>. 
               Click the link in your email to activate your account.
             </p>
-            <p className="text-sm text-clinical-400 mb-6">
+            <p className="text-sm text-text-dim mb-6">
               Didn&apos;t receive the email? Check your spam folder or try again.
             </p>
             <Link
               href="/login"
-              className="btn btn-primary w-full py-3 inline-block"
+              className="btn btn-glow-green w-full py-3 inline-block"
             >
               Go to login
             </Link>
@@ -103,28 +103,32 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dental-950 via-clinical-900 to-dental-900 flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-arc-bg flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background glow effects */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-cyan/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-green/10 rounded-full blur-3xl" />
+      
+      <div className="w-full max-w-md relative z-10 animate-fade-in-up">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 bg-dental-500 rounded-xl flex items-center justify-center">
-            <Sparkles className="w-7 h-7 text-white" />
+          <div className="w-12 h-12 bg-accent-green rounded-xl flex items-center justify-center shadow-glow-green transition-all duration-300 hover:shadow-glow-green">
+            <Sparkles className="w-7 h-7 text-arc-bg" />
           </div>
-          <span className="text-2xl font-semibold text-white">NoteSmith</span>
+          <span className="text-2xl font-semibold text-text-primary">NoteSmith</span>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-2xl font-semibold text-clinical-900 mb-2">
+        <div className="bg-arc-surface rounded-2xl border border-arc-border shadow-xl p-8">
+          <h1 className="text-2xl font-semibold text-text-primary mb-2">
             Create an account
           </h1>
-          <p className="text-clinical-500 mb-8">
+          <p className="text-text-secondary mb-8">
             Start your free trial today
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-accent-red/10 border border-accent-red/30 text-accent-red px-4 py-3 rounded-lg text-sm animate-fade-in">
                 {error}
               </div>
             )}
@@ -195,15 +199,15 @@ export default function RegisterPage() {
                 type="checkbox"
                 id="terms"
                 required
-                className="mt-1 w-4 h-4 rounded border-clinical-300 text-dental-600 focus:ring-dental-500"
+                className="mt-1 w-4 h-4 rounded border-arc-border bg-arc-bg text-accent-green focus:ring-accent-green/50 focus:ring-offset-arc-bg"
               />
-              <label htmlFor="terms" className="text-sm text-clinical-600">
+              <label htmlFor="terms" className="text-sm text-text-secondary">
                 I agree to the{" "}
-                <Link href="/terms" className="text-dental-600 hover:underline">
+                <Link href="/terms" className="text-accent-cyan hover:text-accent-cyan transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(132,243,236,0.5)]">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link href="/privacy" className="text-dental-600 hover:underline">
+                <Link href="/privacy" className="text-accent-cyan hover:text-accent-cyan transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(132,243,236,0.5)]">
                   Privacy Policy
                 </Link>
               </label>
@@ -212,7 +216,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary w-full py-3"
+              className="btn btn-glow-green w-full py-3"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -222,11 +226,11 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-clinical-500">
+          <p className="mt-6 text-center text-sm text-text-secondary">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-dental-600 hover:text-dental-700 font-medium"
+              className="text-accent-green hover:text-accent-green font-medium transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(46,243,138,0.5)]"
             >
               Sign in
             </Link>
@@ -236,4 +240,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-

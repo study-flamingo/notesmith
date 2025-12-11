@@ -158,6 +158,15 @@ cd frontend && npm run dev
 cd backend && celery -A app.workers.celery_app worker --loglevel=info
 ```
 
+## Frontend Styling
+
+Color palette: ARC-esque
+1. BG: #15101a
+2. Text: #eeeeee
+3. Accents: #f80909, #f7cb09, #2ef38a, #84f3ec
+4. Muted: #999999
+5. Dim: #666666
+
 ## Implementation Status
 
 ### Completed ✅

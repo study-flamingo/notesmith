@@ -17,12 +17,12 @@ function Write-Success {
     Write-Host "✓ $Message" -ForegroundColor Green
 }
 
-function Write-Warning {
+function Write-WarningMsg {
     param([string]$Message)
     Write-Host "⚠ $Message" -ForegroundColor Yellow
 }
 
-function Write-Error {
+function Write-ErrorMsg {
     param([string]$Message)
     Write-Host "✗ $Message" -ForegroundColor Red
 }
@@ -53,7 +53,7 @@ if (Test-Command "python") {
     $PythonVersion = & python --version 2>&1
     Write-Success $PythonVersion
 } else {
-    Write-Error "Python not found"
+    Write-ErrorMsg "Python not found"
     $MissingDeps += "Python 3.11+"
 }
 
@@ -62,7 +62,7 @@ if (Test-Command "node") {
     $NodeVersion = & node --version
     Write-Success "Node.js $NodeVersion"
 } else {
-    Write-Error "Node.js not found"
+    Write-ErrorMsg "Node.js not found"
     $MissingDeps += "Node.js 20+"
 }
 
@@ -71,24 +71,24 @@ if (Test-Command "npm") {
     $NpmVersion = & npm --version
     Write-Success "npm $NpmVersion"
 } else {
-    Write-Error "npm not found"
+    Write-ErrorMsg "npm not found"
     $MissingDeps += "npm"
 }
 
 # Check for uv (optional but preferred)
 if (Test-Command "uv") {
     $UvVersion = & uv --version 2>&1 | Select-Object -First 1
-    Write-Success "uv $UvVersion (will use for Python deps)"
+    Write-Success "uv $UvVersion - will use for Python deps"
     $UseUv = $true
 } else {
-    Write-Warning "uv not found (will use pip instead)"
+    Write-WarningMsg "uv not found - will use pip instead"
     Write-Info "Install uv for faster dependency management: https://docs.astral.sh/uv/"
 }
 
 # Exit if missing dependencies
 if ($MissingDeps.Count -gt 0) {
     Write-Host ""
-    Write-Error "Missing required dependencies:"
+    Write-ErrorMsg "Missing required dependencies:"
     foreach ($dep in $MissingDeps) {
         Write-Host "  - $dep"
     }
@@ -128,7 +128,7 @@ if (-not (Test-Path ".env")) {
     if (Test-Path "env.example") {
         Copy-Item "env.example" ".env"
         Write-Success "Created backend/.env from template"
-        Write-Warning "Please edit backend/.env with your API keys"
+        Write-WarningMsg "Please edit backend/.env with your API keys"
     }
 } else {
     Write-Info "backend/.env already exists, skipping"
@@ -153,7 +153,7 @@ if (-not (Test-Path ".env.local")) {
     if (Test-Path "env.example") {
         Copy-Item "env.example" ".env.local"
         Write-Success "Created frontend/.env.local from template"
-        Write-Warning "Please edit frontend/.env.local with your Supabase keys"
+        Write-WarningMsg "Please edit frontend/.env.local with your Supabase keys"
     }
 } else {
     Write-Info "frontend/.env.local already exists, skipping"

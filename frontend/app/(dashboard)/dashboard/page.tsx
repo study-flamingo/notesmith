@@ -12,27 +12,28 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Page header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-fade-in">
         <div>
-          <h1 className="text-2xl font-semibold text-clinical-900">Dashboard</h1>
-          <p className="text-clinical-500 mt-1">
-            Welcome back! Here's an overview of your activity.
+          <h1 className="text-2xl font-semibold text-text-primary">Dashboard</h1>
+          <p className="text-text-secondary mt-1">
+            Welcome back! Here&apos;s an overview of your activity.
           </p>
         </div>
-        <Link href="/dashboard/appointments/new" className="btn btn-primary">
+        <Link href="/dashboard/appointments/new" className="btn btn-glow-green">
           <Plus className="w-4 h-4 mr-2" />
           New Appointment
         </Link>
       </div>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-stagger">
         <StatCard
           title="Total Appointments"
           value="156"
           change="+12%"
           trend="up"
           icon={<Calendar className="w-5 h-5" />}
+          color="cyan"
         />
         <StatCard
           title="Recordings"
@@ -40,6 +41,7 @@ export default function DashboardPage() {
           change="+8%"
           trend="up"
           icon={<FileAudio className="w-5 h-5" />}
+          color="yellow"
         />
         <StatCard
           title="Notes Generated"
@@ -47,6 +49,7 @@ export default function DashboardPage() {
           change="+15%"
           trend="up"
           icon={<FileText className="w-5 h-5" />}
+          color="green"
         />
         <StatCard
           title="Avg. Processing Time"
@@ -54,42 +57,43 @@ export default function DashboardPage() {
           change="-18%"
           trend="down"
           icon={<Clock className="w-5 h-5" />}
+          color="red"
         />
       </div>
 
       {/* Recent activity */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent appointments */}
-        <div className="card p-6">
+        <div className="card-hover p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-clinical-900">
+            <h2 className="text-lg font-semibold text-text-primary">
               Recent Appointments
             </h2>
             <Link
               href="/dashboard/appointments"
-              className="text-sm text-dental-600 hover:text-dental-700"
+              className="text-sm text-accent-cyan hover:text-accent-cyan transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(132,243,236,0.5)]"
             >
               View all →
             </Link>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="flex items-center gap-4 p-3 rounded-lg hover:bg-clinical-50 transition-colors"
+                className="flex items-center gap-4 p-3 rounded-lg hover:bg-arc-surface-hover transition-all duration-200 ease-out cursor-pointer group"
               >
-                <div className="w-10 h-10 bg-dental-100 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-dental-600" />
+                <div className="w-10 h-10 bg-accent-cyan/10 rounded-lg flex items-center justify-center border border-accent-cyan/20 transition-all duration-200 group-hover:border-accent-cyan/40 group-hover:shadow-glow-cyan-sm">
+                  <Calendar className="w-5 h-5 text-accent-cyan" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-clinical-900">
+                  <p className="text-sm font-medium text-text-primary">
                     Patient #{1000 + i}
                   </p>
-                  <p className="text-xs text-clinical-500">
+                  <p className="text-xs text-text-dim">
                     Today at {9 + i}:00 AM
                   </p>
                 </div>
-                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+                <span className="badge badge-green">
                   Completed
                 </span>
               </div>
@@ -98,36 +102,36 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent notes */}
-        <div className="card p-6">
+        <div className="card-hover p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-clinical-900">
+            <h2 className="text-lg font-semibold text-text-primary">
               Recent Notes
             </h2>
             <Link
               href="/dashboard/notes"
-              className="text-sm text-dental-600 hover:text-dental-700"
+              className="text-sm text-accent-cyan hover:text-accent-cyan transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(132,243,236,0.5)]"
             >
               View all →
             </Link>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="flex items-center gap-4 p-3 rounded-lg hover:bg-clinical-50 transition-colors"
+                className="flex items-center gap-4 p-3 rounded-lg hover:bg-arc-surface-hover transition-all duration-200 ease-out cursor-pointer group"
               >
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-accent-yellow/10 rounded-lg flex items-center justify-center border border-accent-yellow/20 transition-all duration-200 group-hover:border-accent-yellow/40 group-hover:shadow-glow-yellow-sm">
+                  <FileText className="w-5 h-5 text-accent-yellow" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-clinical-900">
+                  <p className="text-sm font-medium text-text-primary">
                     SOAP Note - Patient #{1000 + i}
                   </p>
-                  <p className="text-xs text-clinical-500">
+                  <p className="text-xs text-text-dim">
                     Generated {i} hour{i > 1 ? "s" : ""} ago
                   </p>
                 </div>
-                <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                <span className="badge badge-yellow">
                   Generated
                 </span>
               </div>
@@ -138,44 +142,44 @@ export default function DashboardPage() {
 
       {/* Quick actions */}
       <div className="card p-6">
-        <h2 className="text-lg font-semibold text-clinical-900 mb-4">
+        <h2 className="text-lg font-semibold text-text-primary mb-4">
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Link
             href="/dashboard/appointments/new"
-            className="flex items-center gap-4 p-4 rounded-lg border border-clinical-200 hover:border-dental-300 hover:bg-dental-50 transition-colors"
+            className="flex items-center gap-4 p-4 rounded-lg border border-arc-border hover:border-accent-green/30 hover:bg-accent-green/5 transition-all duration-200 ease-out group"
           >
-            <div className="w-12 h-12 bg-dental-100 rounded-lg flex items-center justify-center">
-              <Plus className="w-6 h-6 text-dental-600" />
+            <div className="w-12 h-12 bg-accent-green/10 rounded-lg flex items-center justify-center border border-accent-green/20 transition-all duration-200 group-hover:shadow-glow-green-sm group-hover:border-accent-green/40">
+              <Plus className="w-6 h-6 text-accent-green" />
             </div>
             <div>
-              <p className="font-medium text-clinical-900">New Appointment</p>
-              <p className="text-sm text-clinical-500">Schedule a visit</p>
+              <p className="font-medium text-text-primary">New Appointment</p>
+              <p className="text-sm text-text-dim">Schedule a visit</p>
             </div>
           </Link>
           <Link
             href="/dashboard/recordings"
-            className="flex items-center gap-4 p-4 rounded-lg border border-clinical-200 hover:border-dental-300 hover:bg-dental-50 transition-colors"
+            className="flex items-center gap-4 p-4 rounded-lg border border-arc-border hover:border-accent-cyan/30 hover:bg-accent-cyan/5 transition-all duration-200 ease-out group"
           >
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <FileAudio className="w-6 h-6 text-purple-600" />
+            <div className="w-12 h-12 bg-accent-cyan/10 rounded-lg flex items-center justify-center border border-accent-cyan/20 transition-all duration-200 group-hover:shadow-glow-cyan-sm group-hover:border-accent-cyan/40">
+              <FileAudio className="w-6 h-6 text-accent-cyan" />
             </div>
             <div>
-              <p className="font-medium text-clinical-900">Upload Recording</p>
-              <p className="text-sm text-clinical-500">Transcribe audio</p>
+              <p className="font-medium text-text-primary">Upload Recording</p>
+              <p className="text-sm text-text-dim">Transcribe audio</p>
             </div>
           </Link>
           <Link
             href="/dashboard/templates"
-            className="flex items-center gap-4 p-4 rounded-lg border border-clinical-200 hover:border-dental-300 hover:bg-dental-50 transition-colors"
+            className="flex items-center gap-4 p-4 rounded-lg border border-arc-border hover:border-accent-yellow/30 hover:bg-accent-yellow/5 transition-all duration-200 ease-out group"
           >
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <FileText className="w-6 h-6 text-orange-600" />
+            <div className="w-12 h-12 bg-accent-yellow/10 rounded-lg flex items-center justify-center border border-accent-yellow/20 transition-all duration-200 group-hover:shadow-glow-yellow-sm group-hover:border-accent-yellow/40">
+              <FileText className="w-6 h-6 text-accent-yellow" />
             </div>
             <div>
-              <p className="font-medium text-clinical-900">Manage Templates</p>
-              <p className="text-sm text-clinical-500">Customize formats</p>
+              <p className="font-medium text-text-primary">Manage Templates</p>
+              <p className="text-sm text-text-dim">Customize formats</p>
             </div>
           </Link>
         </div>
@@ -190,22 +194,53 @@ function StatCard({
   change,
   trend,
   icon,
+  color,
 }: {
   title: string;
   value: string;
   change: string;
   trend: "up" | "down";
   icon: React.ReactNode;
+  color: "green" | "cyan" | "yellow" | "red";
 }) {
+  const colorClasses = {
+    green: {
+      bg: "bg-accent-green/10",
+      border: "border-accent-green/20",
+      text: "text-accent-green",
+      glow: "group-hover:shadow-glow-green-sm",
+    },
+    cyan: {
+      bg: "bg-accent-cyan/10",
+      border: "border-accent-cyan/20",
+      text: "text-accent-cyan",
+      glow: "group-hover:shadow-glow-cyan-sm",
+    },
+    yellow: {
+      bg: "bg-accent-yellow/10",
+      border: "border-accent-yellow/20",
+      text: "text-accent-yellow",
+      glow: "group-hover:shadow-glow-yellow-sm",
+    },
+    red: {
+      bg: "bg-accent-red/10",
+      border: "border-accent-red/20",
+      text: "text-accent-red",
+      glow: "group-hover:shadow-glow-red-sm",
+    },
+  };
+
+  const c = colorClasses[color];
+
   return (
-    <div className="card p-6">
+    <div className="card-hover p-6 group">
       <div className="flex items-center justify-between mb-4">
-        <div className="w-10 h-10 bg-clinical-100 rounded-lg flex items-center justify-center text-clinical-600">
+        <div className={`w-10 h-10 ${c.bg} rounded-lg flex items-center justify-center border ${c.border} ${c.text} transition-all duration-200 ${c.glow}`}>
           {icon}
         </div>
         <div
-          className={`flex items-center gap-1 text-sm ${
-            trend === "up" ? "text-green-600" : "text-red-600"
+          className={`flex items-center gap-1 text-sm font-medium ${
+            trend === "up" ? "text-accent-green" : "text-accent-red"
           }`}
         >
           <TrendingUp
@@ -214,9 +249,8 @@ function StatCard({
           {change}
         </div>
       </div>
-      <p className="text-2xl font-semibold text-clinical-900">{value}</p>
-      <p className="text-sm text-clinical-500 mt-1">{title}</p>
+      <p className="text-2xl font-semibold text-text-primary">{value}</p>
+      <p className="text-sm text-text-secondary mt-1">{title}</p>
     </div>
   );
 }
-

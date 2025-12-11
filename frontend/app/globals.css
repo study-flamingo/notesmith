@@ -4,57 +4,261 @@
 
 @layer base {
   :root {
-    --background: 248 250 252;
-    --foreground: 15 23 42;
+    --arc-bg: 21 16 26;
+    --arc-surface: 37 29 46;
+    --text-primary: 238 238 238;
+    --text-secondary: 153 153 153;
+    --accent-green: 46 243 138;
+    --accent-cyan: 132 243 236;
+    --accent-yellow: 247 203 9;
+    --accent-red: 248 9 9;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-arc-bg text-text-primary;
+  }
+
+  /* Selection styling */
+  ::selection {
+    @apply bg-accent-cyan/30 text-text-primary;
   }
 }
 
 @layer components {
+  /* ===== BUTTONS ===== */
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium 
+           transition-all duration-200 ease-out
+           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-arc-bg
+           disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none
+           active:scale-[0.98];
   }
 
   .btn-primary {
-    @apply bg-dental-600 text-white hover:bg-dental-700 focus:ring-dental-500;
+    @apply bg-accent-green text-arc-bg font-semibold
+           hover:bg-accent-green/90 hover:shadow-glow-green-sm
+           focus:ring-accent-green/50;
   }
 
   .btn-secondary {
-    @apply bg-clinical-200 text-clinical-800 hover:bg-clinical-300 focus:ring-clinical-400;
+    @apply bg-arc-surface text-text-primary border border-arc-border
+           hover:bg-arc-surface-hover hover:border-arc-border-bright
+           focus:ring-text-dim;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-clinical-600 hover:bg-clinical-100 focus:ring-clinical-400;
+    @apply bg-transparent text-text-secondary
+           hover:text-text-primary hover:bg-arc-surface
+           focus:ring-text-dim;
   }
 
+  .btn-danger {
+    @apply bg-accent-red/10 text-accent-red border border-accent-red/30
+           hover:bg-accent-red hover:text-white hover:shadow-glow-red-sm hover:border-transparent
+           focus:ring-accent-red/50;
+  }
+
+  .btn-glow-green {
+    @apply bg-accent-green text-arc-bg font-semibold shadow-glow-green
+           hover:shadow-glow-green hover:brightness-110
+           focus:ring-accent-green/50;
+  }
+
+  .btn-glow-cyan {
+    @apply bg-accent-cyan text-arc-bg font-semibold shadow-glow-cyan
+           hover:shadow-glow-cyan hover:brightness-110
+           focus:ring-accent-cyan/50;
+  }
+
+  .btn-glow-yellow {
+    @apply bg-accent-yellow text-arc-bg font-semibold shadow-glow-yellow
+           hover:shadow-glow-yellow hover:brightness-110
+           focus:ring-accent-yellow/50;
+  }
+
+  /* ===== CARDS ===== */
   .card {
-    @apply bg-white rounded-xl border border-clinical-200 shadow-sm;
+    @apply bg-arc-surface rounded-xl border border-arc-border shadow-lg
+           transition-all duration-200 ease-out;
   }
 
+  .card-hover {
+    @apply card hover:border-arc-border-bright hover:shadow-xl hover:translate-y-[-2px];
+  }
+
+  .card-glow {
+    @apply card hover:shadow-glow-cyan-sm hover:border-accent-cyan/30;
+  }
+
+  /* ===== INPUTS ===== */
   .input {
-    @apply w-full rounded-lg border border-clinical-300 bg-white px-4 py-2 text-sm placeholder:text-clinical-400 focus:border-dental-500 focus:outline-none focus:ring-2 focus:ring-dental-500/20;
+    @apply w-full rounded-lg border border-arc-border bg-arc-bg 
+           px-4 py-2.5 text-sm text-text-primary
+           placeholder:text-text-dim
+           transition-all duration-200 ease-out
+           focus:border-accent-cyan focus:outline-none focus:ring-2 focus:ring-accent-cyan/20
+           hover:border-arc-border-bright;
   }
 
   .label {
-    @apply text-sm font-medium text-clinical-700;
+    @apply text-sm font-medium text-text-secondary;
+  }
+
+  /* ===== ICONS ===== */
+  .icon-glow {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .icon-glow:hover {
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .icon-glow-green {
+    @apply text-accent-green transition-all duration-200 ease-out;
+  }
+
+  .icon-glow-green:hover {
+    filter: drop-shadow(0 0 10px rgb(46 243 138 / 0.6));
+  }
+
+  .icon-glow-cyan {
+    @apply text-accent-cyan transition-all duration-200 ease-out;
+  }
+
+  .icon-glow-cyan:hover {
+    filter: drop-shadow(0 0 10px rgb(132 243 236 / 0.6));
+  }
+
+  .icon-glow-yellow {
+    @apply text-accent-yellow transition-all duration-200 ease-out;
+  }
+
+  .icon-glow-yellow:hover {
+    filter: drop-shadow(0 0 10px rgb(247 203 9 / 0.6));
+  }
+
+  .icon-glow-red {
+    @apply text-accent-red transition-all duration-200 ease-out;
+  }
+
+  .icon-glow-red:hover {
+    filter: drop-shadow(0 0 10px rgb(248 9 9 / 0.6));
+  }
+
+  /* ===== NAV ITEMS ===== */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           text-text-secondary
+           transition-all duration-200 ease-out
+           hover:text-text-primary hover:bg-arc-surface;
+  }
+
+  .nav-item-active {
+    @apply bg-accent-green/10 text-accent-green
+           shadow-[inset_0_0_20px_rgba(46,243,138,0.1)];
+  }
+
+  .nav-item-active .nav-icon {
+    filter: drop-shadow(0 0 6px rgb(46 243 138 / 0.5));
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+           transition-all duration-200 ease-out;
+  }
+
+  .badge-green {
+    @apply bg-accent-green/10 text-accent-green border border-accent-green/20;
+  }
+
+  .badge-cyan {
+    @apply bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20;
+  }
+
+  .badge-yellow {
+    @apply bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20;
+  }
+
+  .badge-red {
+    @apply bg-accent-red/10 text-accent-red border border-accent-red/20;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  .animate-stagger > * {
+    animation: fadeInUp 0.4s ease-out backwards;
+  }
+
+  .animate-stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .animate-stagger > *:nth-child(2) { animation-delay: 50ms; }
+  .animate-stagger > *:nth-child(3) { animation-delay: 100ms; }
+  .animate-stagger > *:nth-child(4) { animation-delay: 150ms; }
+  .animate-stagger > *:nth-child(5) { animation-delay: 200ms; }
+  .animate-stagger > *:nth-child(6) { animation-delay: 250ms; }
+  .animate-stagger > *:nth-child(7) { animation-delay: 300ms; }
+  .animate-stagger > *:nth-child(8) { animation-delay: 350ms; }
+}
+
+@layer utilities {
+  /* Glow text effect */
+  .text-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+  }
+
+  .text-glow-sm {
+    text-shadow: 0 0 6px currentColor;
+  }
+
+  /* Backdrop blur with tint */
+  .glass {
+    @apply bg-arc-bg/80 backdrop-blur-xl border border-arc-border;
+  }
+
+  .glass-dark {
+    @apply bg-arc-bg/90 backdrop-blur-xl border border-arc-border;
   }
 }
 
-/* Custom scrollbar */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-clinical-100;
+  @apply bg-arc-bg;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-clinical-300 rounded-full hover:bg-clinical-400;
+  @apply bg-arc-border rounded-full transition-colors;
 }
 
-/* Audio waveform container */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-arc-border-bright;
+}
+
+/* ===== WAVEFORM ===== */
 .waveform-container {
-  @apply bg-clinical-900 rounded-lg p-4;
+  @apply bg-arc-bg rounded-lg p-4 border border-arc-border;
 }
 
+/* ===== FOCUS VISIBLE ===== */
+*:focus-visible {
+  @apply outline-none ring-2 ring-accent-cyan/50 ring-offset-2 ring-offset-arc-bg;
+}
+
+/* ===== LOADING SHIMMER ===== */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(132, 243, 236, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}

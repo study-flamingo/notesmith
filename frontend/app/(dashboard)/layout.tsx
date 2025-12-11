@@ -16,13 +16,12 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-clinical-50">
+    <div className="min-h-screen bg-arc-bg">
       <Sidebar />
       <div className="lg:pl-64">
         <Header user={user} />
-        <main className="p-6">{children}</main>
+        <main className="p-6 animate-fade-in">{children}</main>
       </div>
     </div>
   );
 }
-

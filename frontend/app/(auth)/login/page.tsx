@@ -26,7 +26,6 @@ export default function LoginPage() {
     });
 
     if (error) {
-      // Provide more helpful message for unconfirmed email
       if (error.message === "Invalid login credentials") {
         setError("Invalid email or password. If you just registered, please check your email to confirm your account first.");
       } else {
@@ -41,28 +40,32 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dental-950 via-clinical-900 to-dental-900 flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-arc-bg flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background glow effects */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-accent-green/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent-cyan/10 rounded-full blur-3xl" />
+      
+      <div className="w-full max-w-md relative z-10 animate-fade-in-up">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 bg-dental-500 rounded-xl flex items-center justify-center">
-            <Sparkles className="w-7 h-7 text-white" />
+          <div className="w-12 h-12 bg-accent-green rounded-xl flex items-center justify-center shadow-glow-green transition-all duration-300 hover:shadow-glow-green">
+            <Sparkles className="w-7 h-7 text-arc-bg" />
           </div>
-          <span className="text-2xl font-semibold text-white">NoteSmith</span>
+          <span className="text-2xl font-semibold text-text-primary">NoteSmith</span>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-2xl font-semibold text-clinical-900 mb-2">
+        <div className="bg-arc-surface rounded-2xl border border-arc-border shadow-xl p-8 backdrop-blur-xl">
+          <h1 className="text-2xl font-semibold text-text-primary mb-2">
             Welcome back
           </h1>
-          <p className="text-clinical-500 mb-8">
+          <p className="text-text-secondary mb-8">
             Sign in to your account to continue
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-accent-red/10 border border-accent-red/30 text-accent-red px-4 py-3 rounded-lg text-sm animate-fade-in">
                 {error}
               </div>
             )}
@@ -98,16 +101,16 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 rounded border-clinical-300 text-dental-600 focus:ring-dental-500"
+                  className="w-4 h-4 rounded border-arc-border bg-arc-bg text-accent-green focus:ring-accent-green/50 focus:ring-offset-arc-bg"
                 />
-                <span className="text-sm text-clinical-600">Remember me</span>
+                <span className="text-sm text-text-secondary">Remember me</span>
               </label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-dental-600 hover:text-dental-700"
+                className="text-sm text-accent-cyan hover:text-accent-cyan transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(132,243,236,0.5)]"
               >
                 Forgot password?
               </Link>
@@ -116,7 +119,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary w-full py-3"
+              className="btn btn-glow-green w-full py-3"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -126,11 +129,11 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-clinical-500">
-            Don't have an account?{" "}
+          <p className="mt-6 text-center text-sm text-text-secondary">
+            Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="text-dental-600 hover:text-dental-700 font-medium"
+              className="text-accent-green hover:text-accent-green font-medium transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(46,243,138,0.5)]"
             >
               Sign up
             </Link>
@@ -140,4 +143,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
