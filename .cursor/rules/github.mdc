@@ -7,6 +7,7 @@ alwaysApply: true
 **Ensure all API keys, absolute paths, and other secrets are removed from this repo BEFORE pushing!!!**
 - Ensure [.gitignore](../../.gitignore) is up to date and robust
 - .env files should always be excluded
+- For this project, include the `.cursor` folder and its contents in commits. Do not exclude.
 
 ### Versioning
 - If significant changes or feature additions have been made since the last tag, consider a minor version bump. Always consult with the user before bumping the version.
@@ -16,5 +17,8 @@ alwaysApply: true
   1. Main [README.md](../../README.md)
   2. Backend [README.md](../../src/notesmith/README.md)
   3. [SPECS.md](../../docs/SPECS.md)
+  4. [ROADMAP.md](../../docs/ROADMAP.md)
+
+If any documentation is NOT up-to-date, pause the commit process to update these files.
 
 - While it should be updated during development, check the [dockerfile](../../backend/Dockerfile) and [docker-compose.yml](../../docker-compose.yml) to ensure it is up to date and will run the project as expected.

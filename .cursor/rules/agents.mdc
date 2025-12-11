@@ -1,3 +1,12 @@
 ---
 alwaysApply: true
 ---
+## AGENTS.md Management
+
+[AGENTS.md](../../AGENTS.md) must be divided into two parts:
+1. **Project Summary**, including dev info and concise roadmap - this should be an evolving summary of the project's current state, as well as hints for further development.
+2. **Scratchpad** - this should be a dynamic section, with development notes relevant to what is *currently* being worked on. Irrelevant notes should regularly be pruned from this section.
+
+Throughout development, keep notes about architectural decisions, TODOs that may span multiple sessions, and particularly information about what we are currently working on. At least once per conversation, prune irrelevant notes from the Scratchpad section.
+
+AGENTS.md should be kept as concise as possible without sacrificing detail.

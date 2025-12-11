@@ -2,7 +2,7 @@
 
 ## Attribution-NonCommercial License (v1.0)
 
-Copyright © 2024 Joel C. All rights reserved.
+Copyright © 2025-2026 Dr. Joel Casimir, D.D.S. All rights reserved.
 
 ---
 
@@ -41,7 +41,7 @@ Copyright © 2024 Joel C. All rights reserved.
 When using, sharing, or creating derivative works, you must:
 
 1. Include a visible credit in the format:  
-   `"Built with NoteSmith (https://github.com/[your-repo]) by Joel C."`
+   `"Built with NoteSmith (https://github.com/[your-repo]) by Dr. Joel Casimir, D.D.S."`
 
 2. Retain all copyright notices and this license file in any copies or derivatives.
 
