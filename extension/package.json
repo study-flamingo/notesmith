@@ -1,0 +1,32 @@
+{
+  "name": "notesmith-extension",
+  "version": "0.1.0",
+  "description": "Insert NoteSmith clinical notes into any web-based practice management system",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "postinstall": "wxt prepare",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@wxt-dev/module-react": "^1.1.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "wxt": "^0.19.0"
+  }
+}
+

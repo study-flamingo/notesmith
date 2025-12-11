@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 248 250 252;
+    --foreground: 15 23 42;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-dental-600 text-white hover:bg-dental-700 focus:ring-dental-500;
+  }
+
+  .btn-secondary {
+    @apply bg-clinical-200 text-clinical-800 hover:bg-clinical-300 focus:ring-clinical-400;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-clinical-600 hover:bg-clinical-100 focus:ring-clinical-400;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-clinical-200 shadow-sm;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-clinical-300 bg-white px-4 py-2 text-sm placeholder:text-clinical-400 focus:border-dental-500 focus:outline-none focus:ring-2 focus:ring-dental-500/20;
+  }
+
+  .label {
+    @apply text-sm font-medium text-clinical-700;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-clinical-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-clinical-300 rounded-full hover:bg-clinical-400;
+}
+
+/* Audio waveform container */
+.waveform-container {
+  @apply bg-clinical-900 rounded-lg p-4;
+}
+
