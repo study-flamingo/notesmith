@@ -29,6 +29,7 @@ Copyright © 2025-2026 Dr. Joel Casimir, D.D.S. All rights reserved.
    - Using the software to generate revenue, directly or indirectly
    - Offering the software as a SaaS (Software as a Service)
    - Using the software in a business context that generates profit
+   - Inclusion of this software, in whole or in part, as a component of a paid service or product
 
 2. **Remove Attribution** — You may not remove, obscure, or modify copyright notices, license information, or attribution requirements.
 
@@ -41,7 +42,7 @@ Copyright © 2025-2026 Dr. Joel Casimir, D.D.S. All rights reserved.
 When using, sharing, or creating derivative works, you must:
 
 1. Include a visible credit in the format:  
-   `"Built with NoteSmith (https://github.com/[your-repo]) by Dr. Joel Casimir, D.D.S."`
+   `"Built with NoteSmith (https://github.com/study-flamingo/notesmith) by Dr. Joel Casimir, D.D.S."`
 
 2. Retain all copyright notices and this license file in any copies or derivatives.
 

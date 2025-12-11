@@ -5,6 +5,9 @@ Transform dental appointment recordings into professional clinical notes with AI
 
 NoteSmith automatically transcribes your appointment recordings and generates structured clinical documentation using customizable templates—saving you hours of administrative work while maintaining HIPAA compliance.
 
+**🇺🇸 US users:**
+For production use with live patient data, it is *critical* to read the [HIPAA notes](#️-hipaa-compliance-notes), and ensure your usage is in compliance with state and federal laws and regulations. Take patient privacy seriously!
+
 ## Features
 
 ### 🔒 HIPAA Compliant
@@ -15,7 +18,7 @@ Designed with healthcare security requirements in mind:
 - Role-based access control
 
 ### 🎙️ Audio Transcription
-Upload appointment recordings and receive accurate transcripts powered by OpenAI Whisper. Supports MP3, WAV, M4A, and other common audio formats up to 100MB.
+Upload appointment recordings and receive accurate transcripts powered by OpenAI, Anthropic, or your AI provider of choice. Supports MP3, WAV, M4A, and other common audio formats up to 100MB. *(On roadmap: multi-part audio support, for longer appointments or conversations)*
 
 ### 🤖 AI-Powered Analysis
 Automatically extract clinical information from transcripts:
@@ -38,14 +41,14 @@ Export finalized notes in multiple formats:
 
 ## Getting Started
 
-### Prerequisites
+### 📋 Prerequisites
 
-- Python 3.11 or higher
+- Python 3.13 or higher
 - Node.js 20 or higher
 - A Supabase account (free tier works for development)
 - An OpenAI API key
 
-### Installation
+### 💾 Installation
 
 1. **Clone the repository**
 
@@ -86,13 +89,13 @@ Export finalized notes in multiple formats:
    cp env.example .env.local
    ```
 
-3. **Configure Supabase**
+3. ☁️ **Configure Supabase**
    - Create a new project at [supabase.com](https://supabase.com)
    - Run the migrations in `supabase/migrations/` via the SQL editor
    - Create a storage bucket named `recordings`
    - Copy your project URL and keys
 
-5. **Configure environment variables**
+5. 🏞️ **Configure environment variables**
 
    Find your Supabase keys at: **Dashboard → Settings → API**
 
@@ -114,15 +117,17 @@ Export finalized notes in multiple formats:
    NEXT_PUBLIC_API_URL=http://localhost:8000
    ```
 
-### Running the Application
+### 🚀 Running the Application
 
-**Option 1: Docker Compose (Recommended)**
+**Option 1: 🐳 Docker Compose (Recommended)**
 
 ```bash
 docker-compose up
 ```
 
-**Option 2: Manual**
+Once all containers are running, visit `http://localhost:3000` and create a login!
+
+**Option 2: ⚙️ Manual**
 
 Terminal 1 - Backend:
 
@@ -152,13 +157,13 @@ cd backend
 celery -A app.workers.celery_app worker --loglevel=info
 ```
 
-6. **Open the application**
+6. 🌞 **Open the application**
 
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## Usage
 
-### Creating Your First Note
+### ✨ Creating Your First Note
 
 1. **Sign up** for an account
 2. **Create an appointment** from the dashboard
@@ -168,7 +173,7 @@ celery -A app.workers.celery_app worker --loglevel=info
 6. **Review and edit** the generated content
 7. **Export** to PDF or DOCX
 
-### Managing Templates
+### 🗃️ Managing Templates
 
 Default templates are provided for SOAP, DAP, and Narrative formats. To create custom templates:
 
@@ -177,7 +182,7 @@ Default templates are provided for SOAP, DAP, and Narrative formats. To create c
 3. Use placeholders like `{{ chief_complaint }}`, `{{ procedures }}`, `{{ findings }}`
 4. Save and use for future note generation
 
-## LLM Providers
+## 🤖 LLM Providers
 
 NoteSmith supports multiple AI providers for transcript analysis:
 
@@ -189,13 +194,13 @@ NoteSmith supports multiple AI providers for transcript analysis:
 
 Change the default provider with `DEFAULT_LLM_PROVIDER` environment variable.
 
-## API Documentation
+## 📡 API Documentation
 
 When running, visit:
 - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
 - ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 notesmith/
@@ -205,7 +210,7 @@ notesmith/
 └── docker-compose.yml
 ```
 
-## HIPAA Compliance Notes
+## ⚕️ HIPAA Compliance Notes
 
 For production healthcare use:
 

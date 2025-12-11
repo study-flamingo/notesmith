@@ -18,13 +18,14 @@
 - [x] Note generation pipeline
 - [x] PDF and DOCX export service
 - [x] Audit logging
+- [ ] Multipart audio support (for sessions with recordings >100MB)
 
 ### Frontend Modules
 
 | Module | Status | Notes |
 |--------|--------|-------|
 | Dashboard | 🟡 Partial | UI works, needs real data |
-| Templates | ✅ Complete | List, view, edit, create, import/export |
+| Templates | 🔁 Revising | List, view, edit, create, import/export |
 | Appointments | 🔴 TODO | List, create, edit, delete |
 | Recordings | 🔴 TODO | Upload, playback, status |
 | Notes | 🔴 TODO | View, edit, export |
@@ -41,7 +42,7 @@
 - [ ] Template conditionals and loops
 - [ ] Batch processing for multiple recordings
 - [ ] Analytics dashboard
-- [ ] HIPAA compliance (BAAs, data retention)
+- [ ] HIPAA compliance (BAAs, data retention, privacy and data management)
 
 ## 📋 Phase 4: Advanced Features
 
