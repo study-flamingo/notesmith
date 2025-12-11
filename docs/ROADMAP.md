@@ -101,4 +101,4 @@ Standalone command-line interface for using backend services in scripts, pipelin
 
 ---
 
-*Last updated: December 11, 2024*
+*Last updated: December 11, 2025*
