@@ -1,0 +1,10 @@
+{
+    "agentCanUpdateSnapshot": true,
+    "install": "setup.sh",
+    "terminals": [
+        {
+            "name": "bash",
+            "command": "bash"
+        }
+    ]
+}
