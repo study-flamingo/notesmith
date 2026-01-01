@@ -1,7 +1,11 @@
 ---
-alwaysApply: true
+description: All Github/Gitkraken tasks
+alwaysApply: false
 ---
 ## Pre-Commit
+
+### Test-Driven Development
+All tests should pass before pushing to Github. If there are problematic tests, attempt to fix them BEFORE pushing. If after several tries a test still will not pass, or if there is a legitimate reason the test cannot pass in the current context, advise the user and ask if they would like to commit anyway.
 
 ### Security
 **Ensure all API keys, absolute paths, and other secrets are removed from this repo BEFORE pushing!!!**
@@ -18,7 +22,6 @@ alwaysApply: true
   2. Backend [README.md](../../src/notesmith/README.md)
   3. [SPECS.md](../../docs/SPECS.md)
   4. [ROADMAP.md](../../docs/ROADMAP.md)
-
-If any documentation is NOT up-to-date, pause the commit process to update these files.
-
+- If any documentation is NOT up-to-date, pause the commit process to update these files.
 - While it should be updated during development, check the [dockerfile](../../backend/Dockerfile) and [docker-compose.yml](../../docker-compose.yml) to ensure it is up to date and will run the project as expected.
+- Look for any `TODO` lines or placeholders that are not meant for the end-user, and attempt to address these prior to commit.
