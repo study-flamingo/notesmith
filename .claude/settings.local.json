@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(source restart.sh)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(find:*)",
+      "Bash(docker-compose restart:*)",
+      "Bash(docker-compose ps:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

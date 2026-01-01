@@ -22,7 +22,7 @@ services:
         - notesmith-backend:latest
     image: notesmith-backend:latest
     ports:
-      - "8000:8000"
+      - "8100:8000"
     environment:
       - REDIS_URL=redis://redis:6379/0
       # UV configuration for runtime
@@ -72,7 +72,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8100
     env_file:
       - ./frontend/.env.local
     volumes:
