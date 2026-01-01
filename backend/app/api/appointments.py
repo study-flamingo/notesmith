@@ -12,6 +12,7 @@ from app.models.appointments import (
     AppointmentStatus,
     AppointmentUpdate,
 )
+from app.workers.tasks import process_appointment_task
 
 router = APIRouter()
 
@@ -177,4 +178,84 @@ async def delete_appointment(
         resource_type="appointment",
         resource_id=str(appointment_id),
     )
+
+
+@router.post("/{appointment_id}/process", status_code=status.HTTP_202_ACCEPTED)
+async def process_appointment(
+    appointment_id: UUID,
+    current_user: CurrentUser,
+    db: DBClient,
+) -> dict:
+    """
+    Queue AI processing for an appointment.
+
+    Validates that the appointment has:
+    - At least one recording
+    - At least one template assigned
+
+    Then queues a background job to transcribe recordings and generate notes.
+    """
+    # Get the appointment
+    appointment_result = (
+        db.table("appointments")
+        .select("*")
+        .eq("id", str(appointment_id))
+        .single()
+        .execute()
+    )
+
+    if not appointment_result.data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found",
+        )
+
+    appointment = appointment_result.data
+
+    # Check if appointment has at least one template
+    template_ids = appointment.get("template_ids", [])
+    if not template_ids or len(template_ids) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Appointment must have at least one template assigned",
+        )
+
+    # Check if appointment has at least one recording
+    recordings_result = (
+        db.table("recordings")
+        .select("id")
+        .eq("appointment_id", str(appointment_id))
+        .execute()
+    )
+
+    if not recordings_result.data or len(recordings_result.data) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Appointment must have at least one recording",
+        )
+
+    # Update appointment status to IN_PROGRESS
+    db.table("appointments").update(
+        {"status": AppointmentStatus.IN_PROGRESS.value}
+    ).eq("id", str(appointment_id)).execute()
+
+    # Queue the processing task
+    task = process_appointment_task.delay(
+        appointment_id=str(appointment_id),
+        user_id=str(current_user.id),
+    )
+
+    audit_logger.log_access(
+        user_id=str(current_user.id),
+        action="process",
+        resource_type="appointment",
+        resource_id=str(appointment_id),
+        details={"task_id": task.id, "template_count": len(template_ids)},
+    )
+
+    return {
+        "message": "Appointment queued for processing",
+        "task_id": task.id,
+        "appointment_id": str(appointment_id),
+    }
 

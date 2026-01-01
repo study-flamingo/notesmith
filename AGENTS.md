@@ -269,6 +269,80 @@ See `backend/app/core/security.py` for implementation.
 | CORS errors | Ensure no rogue process on port 8000, check `cors_origins` in config |
 | Stale Python code | `./restart.sh -f` or manually delete `__pycache__` |
 
+### Agent Module (Dec 2024)
+
+Added **AI Agent** module to dashboard sidebar with two main sections:
+
+**Settings Tab:**
+- Configure custom system prompt for AI behavior
+- View current LLM provider (OpenAI/Anthropic/Ollama)
+- Real-time prompt editing with character count
+- Save/reset functionality with change tracking
+- Best practices guide for prompt engineering
+
+**Activity Log Tab:**
+- Detailed audit trail of AI operations (generate, analyze, transcribe)
+- Filter by status (all/success/error)
+- Real-time activity monitoring with refresh
+- Resource type badges (note, transcript, recording, template)
+- Expandable details view with JSON output
+- Summary statistics (successful, errors, total)
+
+**AI Processing Workflow:**
+1. User navigates to an appointment detail page (`/dashboard/appointments/{id}`)
+2. User selects which template(s) to use from the template selection panel
+3. User uploads recording(s) to the appointment (if not already uploaded)
+4. User clicks "Process with AI" button
+5. System validates:
+   - At least one recording exists
+   - At least one template is selected
+6. If validation passes, background job is queued (Celery task `process_appointment_task`):
+   - Fetches all recordings for the appointment
+   - Creates or reuses transcripts for each recording
+   - Queues transcription tasks (Whisper API)
+   - Waits for transcripts to complete (with retry logic)
+   - Generates clinical notes for each transcript × template combination
+   - Updates appointment status to COMPLETED
+7. User can monitor progress in Activity Log and appointment status updates
+
+**Database Changes:**
+- Added `template_ids` JSONB field to `appointments` table (migration 004)
+- Stores array of template UUIDs for each appointment
+- GIN index on `template_ids` for efficient querying
+
+**Frontend Implementation:**
+- **Appointment Detail Page** (`/dashboard/appointments/{id}/page.tsx`):
+  - Shows appointment information (patient ref, date, notes, status)
+  - Lists all recordings with file size, duration, and status
+  - Template selection panel with multi-select checkboxes
+  - Real-time template assignment updates
+  - "Process with AI" button with validation and loading states
+  - Requirements checklist showing recording and template prerequisites
+  - Success/error messages with task tracking
+
+**Backend Implementation:**
+- **API Endpoint** (`POST /api/v1/appointments/{id}/process`):
+  - Validates appointment has recordings and templates
+  - Updates appointment status to IN_PROGRESS
+  - Queues background processing task
+  - Returns task ID for tracking
+  - Logs audit trail
+
+- **Celery Task** (`process_appointment_task` in `backend/app/workers/tasks.py`):
+  - Orchestrates entire AI processing workflow
+  - Handles transcript creation/reuse
+  - Manages task retries and error handling
+  - Updates appointment status on completion
+  - Comprehensive logging and audit trail
+
+**TODO:**
+- Implement backend API endpoint for saving custom system prompts
+- Connect Activity Log to real audit logger (currently uses mock data)
+- Add pagination for activity logs
+- Add export functionality for audit logs (CSV/JSON)
+- Add real-time status updates on appointment detail page (websockets/polling)
+- Add recording upload functionality to appointment detail page
+
 ### Next Up
 
 **Chrome Extension:**

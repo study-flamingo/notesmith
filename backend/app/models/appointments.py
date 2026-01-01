@@ -23,6 +23,7 @@ class AppointmentCreate(BaseSchema):
     patient_ref: str  # External patient reference (no PHI stored directly)
     appointment_date: datetime
     notes: str | None = None
+    template_ids: list[UUID] = []
 
 
 class AppointmentUpdate(BaseSchema):
@@ -32,6 +33,7 @@ class AppointmentUpdate(BaseSchema):
     appointment_date: datetime | None = None
     status: AppointmentStatus | None = None
     notes: str | None = None
+    template_ids: list[UUID] | None = None
 
 
 class Appointment(BaseDBModel):
@@ -42,4 +44,5 @@ class Appointment(BaseDBModel):
     appointment_date: datetime
     status: AppointmentStatus = AppointmentStatus.SCHEDULED
     notes: str | None = None
+    template_ids: list[UUID] = []
 

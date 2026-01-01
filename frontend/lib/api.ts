@@ -24,10 +24,14 @@ async function apiRequest<T>(
         headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE}${endpoint}`, {
+    const url = `${API_BASE}${endpoint}`;
+    console.log(`[API] ${method} ${url}`);
+
+    const response = await fetch(url, {
         method,
         headers,
         body: body ? JSON.stringify(body) : undefined,
+        credentials: 'include',
     });
 
     if (!response.ok) {
@@ -73,6 +77,12 @@ export const appointmentsApi = {
             method: "DELETE",
             token,
         }),
+
+    process: (token: string, id: string) =>
+        apiRequest<{ message: string; task_id: string; appointment_id: string }>(
+            `/api/v1/appointments/${id}/process`,
+            { method: "POST", token }
+        ),
 };
 
 // Recordings API
@@ -204,6 +214,7 @@ export interface Appointment {
     appointment_date: string;
     status: "scheduled" | "in_progress" | "completed" | "cancelled";
     notes?: string;
+    template_ids?: string[];
     created_at: string;
     updated_at?: string;
 }
@@ -213,6 +224,7 @@ export interface AppointmentCreate {
     patient_ref: string;
     appointment_date: string;
     notes?: string;
+    template_ids?: string[];
 }
 
 export interface Recording {

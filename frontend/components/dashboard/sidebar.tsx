@@ -10,6 +10,7 @@ import {
   Settings,
   Sparkles,
   Home,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ const navigation = [
   { name: "Recordings", href: "/dashboard/recordings", icon: FileAudio },
   { name: "Notes", href: "/dashboard/notes", icon: FileText },
   { name: "Templates", href: "/dashboard/templates", icon: LayoutTemplate },
+  { name: "Agent", href: "/dashboard/agent", icon: Bot },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
